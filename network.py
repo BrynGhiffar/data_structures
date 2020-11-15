@@ -1,5 +1,5 @@
 """
-Graph class
+Network class
 
 Code written by Bryn Abyan Ghiffar
 """
@@ -18,7 +18,7 @@ class NetworkNode(Generic[T]):
     
     def connect(self, other_node) -> None:
         """connects self to other node"""
-        assert type(other_node) is NetworkNode, "target must be of type GraphNode"
+        assert type(other_node) is NetworkNode, "target must be of type NetworkNode"
         assert not (other_node in self.connections), "node already connected"
     
         other_node.connections.append(self)
@@ -31,7 +31,7 @@ class NetworkNode(Generic[T]):
         if len(self.connections) == 0:
             raise Exception("Node does not have connections")
     
-        assert type(other_node) is NetworkNode, "target must be of type GraphNode"
+        assert type(other_node) is NetworkNode, "target must be of type NetworkNode"
         found = False
         i1 = -1 # This is the index of the
                 # to be deleted node in the self 
@@ -80,7 +80,7 @@ class Network(Generic[T]):
                     return findings
     
     def dfs(self, key : T) -> NetworkNode:
-        assert len(self.nodes) > 0, "Graph must have nodes"
+        assert len(self.nodes) > 0, "Network must have nodes"
         findings = self.dfs_aux(self.nodes[0], key, [])
         if findings is None:
             raise Exception("key not found")
@@ -95,10 +95,10 @@ class Network(Generic[T]):
     
     def load_from_matrix(self, matrix) -> None:
         """
-        creates a graph based on the input
+        creates a Network based on the input
         adjacency matrix.
 
-        Note : This graph implementation
+        Note : This Network implementation
         is non-directional as well as non-weighted.
         Therefore, when taking in the adjacency matrix
         the graph only looks at the top right triangle
