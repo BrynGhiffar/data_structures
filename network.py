@@ -8,7 +8,7 @@ from typing import TypeVar, Generic, List
 
 T = TypeVar('T')
 
-class GraphNode(Generic[T]):
+class NetworkNode(Generic[T]):
 
     def __init__(self, key : T, item : T) -> None:
         self.key = key
@@ -18,7 +18,7 @@ class GraphNode(Generic[T]):
     
     def connect(self, other_node) -> None:
         """connects self to other node"""
-        assert type(other_node) is GraphNode, "target must be of type GraphNode"
+        assert type(other_node) is NetworkNode, "target must be of type GraphNode"
         assert not (other_node in self.connections), "node already connected"
     
         other_node.connections.append(self)
@@ -31,7 +31,7 @@ class GraphNode(Generic[T]):
         if len(self.connections) == 0:
             raise Exception("Node does not have connections")
     
-        assert type(other_node) is GraphNode, "target must be of type GraphNode"
+        assert type(other_node) is NetworkNode, "target must be of type GraphNode"
         found = False
         i1 = -1 # This is the index of the
                 # to be deleted node in the self 
@@ -63,12 +63,12 @@ class GraphNode(Generic[T]):
         self.connections_count -= 1
 
 
-class Graph(Generic[T]):
+class Network(Generic[T]):
 
     def __init__(self) -> None:
         self.nodes = []
     
-    def dfs_aux(self, current : GraphNode, key : T, visited : List[GraphNode]) -> GraphNode:
+    def dfs_aux(self, current : NetworkNode, key : T, visited : List[NetworkNode]) -> NetworkNode:
         if current.key == key:
             return current
         else:
@@ -79,7 +79,7 @@ class Graph(Generic[T]):
                 if findings is not None:
                     return findings
     
-    def dfs(self, key : T) -> GraphNode:
+    def dfs(self, key : T) -> NetworkNode:
         assert len(self.nodes) > 0, "Graph must have nodes"
         findings = self.dfs_aux(self.nodes[0], key, [])
         if findings is None:
@@ -105,7 +105,7 @@ class Graph(Generic[T]):
         of the adjacency matrix.
         """
         dim = len(matrix)
-        self.nodes = [GraphNode(i, None) for i in range(dim)]
+        self.nodes = [NetworkNode(i, None) for i in range(dim)]
         for i in range(dim):
             for j in range(i + 1, dim):
                 if matrix[i][j] == 1:
@@ -119,7 +119,7 @@ if __name__ == '__main__':
             [1, 0, 0, 0, 0],
             [0, 1, 0, 0, 0],
             [0, 1, 0, 0, 0]]
-    my_graph = Graph()
+    my_graph = Network()
     my_graph.load_from_matrix(mat)
     my_graph[0] = 4
     print(my_graph[4])
