@@ -38,7 +38,7 @@ class Stack(ABC, Generic[T]):
     
     @abstractmethod
     def is_full(self) -> bool:
-        """returns True is full and returns False otherwise"""
+        """returns True if full and returns False otherwise"""
         pass
     
     def clear(self) -> None:
